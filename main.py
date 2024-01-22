@@ -12,10 +12,11 @@ import time
 # options = webdriver.ChromeOptions()
 # driver = webdriver.Chrome(service=service, options=options)
 
-driver = webdriver.Chrome(executable_path="chromedriver")
+driver = webdriver.Chrome()
 
 YT_LINK = 'https://www.youtube.com/@MrBeast'
 VK_LINK = 'https://vk.com/nrnews24'
+IT_LINK = 'https://www.instagram.com/yungnik74/'
 
 
 # YouTube
@@ -37,7 +38,7 @@ except:
   pass  
 
 
-# VK
+# # VK
 
 driver.get(VK_LINK)
 
@@ -56,7 +57,27 @@ except:
   pass
 
 
+# Instagram
+
+driver.get(IT_LINK)
+
+time.sleep(2)
+
+source = driver.page_source
+html = BeautifulSoup(source, 'html.parser')
+
+subscriber_count_element = html.find('meta', attrs={'property': 'og:description'})
+subscribers_count_it = 0
+try:
+  subscribers_count_it = convert_subscribers_count_it(subscriber_count_element.get('content').strip())
+except: 
+  pass
+
+
 print(f"YT: {subscribers_count_yt}")
 print(f"VK: {subscribers_count_vk}")
+print(f"IT: {subscribers_count_it}")
 
 driver.quit()
+
+
